@@ -11,9 +11,7 @@ const tableIdentifier = {
   uuid: {
     type: DataTypes.UUID,
     primaryKey: true,
-    defaultValue: function () {
-      return uuidv7();
-    },
+    defaultValue: () => uuidv7(),
     allowNull: false,
     unique: true,
   },

@@ -19,11 +19,11 @@ UserModel.init(
       unique: true,
       defaultValue: uuidv7(),
     },
-    faskesUuid: {
+    faskes_uuid: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
-    roleUuid: {
+    role_uuid: {
       type: DataTypes.STRING(255),
       allowNull: false,
       unique: false,
@@ -57,12 +57,12 @@ UserModel.init(
       type: DataTypes.STRING(1000),
       allowNull: true,
     },
-    inventoryMedis: {
+    inventory_medis: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       unique: false,
     },
-    inventoryNonMedis: {
+    inventory_non_medis: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       unique: false,
