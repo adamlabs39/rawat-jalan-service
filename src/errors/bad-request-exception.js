@@ -1,7 +1,8 @@
 export default class BadRequestException extends Error {
-  constructor(message) {
+  constructor(message, errorMessage, statusCode = 400) {
     super(message);
     this.message = message;
-    this.status = 400;
+    this.errorMessage = errorMessage;
+    this.status = statusCode;
   }
 }
