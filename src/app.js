@@ -1,13 +1,17 @@
 import express from "express";
+import "dotenv/config";
 import cors from "cors";
 import routes from "./routes/routes.js";
 import errorMiddleware from "./middlewares/error-middleware.js";
-import MODELMERGE from "./models/model-synchronize.js";
 import authorizationMiddleware from "./middlewares/authorization-middleware.js";
-import { dbSeeder } from "./seeders/db-seeder.js";
+import syncDB from "./models/model-synchronize.js";
 
 const APPLICATION_PORT = process.env.APPLICATION_PORT;
 const APPLICATION_HOST = process.env.APPLICATION_HOST;
+const API_BASE = process.env.API_BASE || "api";
+const API_VERSION = process.env.API_VERSION || "v3";
+const API_MODULE = process.env.API_MODULE || "pelayanan";
+const BASE_URL = `/${API_BASE}/${API_VERSION}/${API_MODULE}`;
 
 const app = express();
 app.use(
@@ -24,22 +28,14 @@ app.use(
     methods: ["GET", "POST", "HEAD", "PUT", "DELETE", "PATCH", "OPTIONS"],
   })
 );
+
+syncDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(authorizationMiddleware);
-app.use(routes);
+app.use(BASE_URL, routes);
 app.use(errorMiddleware);
 app.listen(APPLICATION_PORT, APPLICATION_HOST, async () => {
-  try {
-    for (const model of MODELMERGE) {
-      await model.sync({ alter: false, force: true });
-    }
-
-    await dbSeeder();
-  } catch (error) {
-    console.error("Failed to synchronize the database:", error);
-  }
-
   console.log(
     `Server running on http://${APPLICATION_HOST}:${APPLICATION_PORT}`
   );
