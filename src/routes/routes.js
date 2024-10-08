@@ -1,13 +1,11 @@
 import express from "express";
-
-const apiBase = process.env.API_BASE || "api";
-const apiVersion = process.env.API_VERSION || "v1";
-const baseUrl = `/${apiBase}/${apiVersion}/igd`;
+import AntrianRawatJalanController from "../controllers/antrian_rj-controller.js";
 
 const routes = express.Router();
 
-routes.get(`${baseUrl}/`, (req, res) =>
-  res.status(200).json({ message: "Hello World" })
-);
+routes.get(`/`, (req, res) => res.status(200).json({ message: "Hello World" }));
+
+routes.put(`/rajal/:uuid`, AntrianRawatJalanController.updateStatus);
+routes.get(`/rajal`, AntrianRawatJalanController.getAntrian);
 
 export default routes;

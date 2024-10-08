@@ -4,6 +4,7 @@ import {
   messageErrorDataNotFound,
   messageErrorEdit,
   messageSuccessEdit,
+  messageSuccessShow,
 } from "../helpers/message.js";
 import AntrianRawatJalanRepository from "../repositories/antrian_rj-repository.js";
 import ResultResponse from "../responses/result-response.js";
@@ -33,5 +34,12 @@ export default class AntrianRawatJalanService {
       data
     );
     return ResultResponse.responseMessagePayload(messageSuccessEdit, result);
+  }
+
+  static async getAntrian(status) {
+    const result = await AntrianRawatJalanRepository.getAntrian(
+      parseInt(status) || null
+    );
+    return ResultResponse.responseMessagePayload(messageSuccessShow, result);
   }
 }
