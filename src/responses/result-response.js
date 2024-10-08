@@ -12,4 +12,10 @@ export default class ResultResponse {
       payload: data,
     };
   }
+  static errorResponse(message, error) {
+    return {
+      message: message,
+      errors: error,
+    };
+  }
 }
