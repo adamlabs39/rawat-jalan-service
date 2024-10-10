@@ -29,12 +29,13 @@ app.use(
   })
 );
 
+app.use(authorizationMiddleware);
 syncDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(authorizationMiddleware);
 app.use(BASE_URL, routes);
 app.use(errorMiddleware);
+
 app.listen(APPLICATION_PORT, APPLICATION_HOST, async () => {
   console.log(
     `Server running on http://${APPLICATION_HOST}:${APPLICATION_PORT}`
