@@ -6,12 +6,12 @@ export default class PatientModel extends Model {}
 PatientModel.init(
   {
     ...identifierModel,
-    satuSehatUuid: {
+    satu_sehat_uuid: {
       type: DataTypes.STRING(255),
       allowNull: true,
       unique: true,
     },
-    noRm: {
+    no_rm: {
       type: DataTypes.STRING(255),
       allowNull: false,
       unique: true,
@@ -28,11 +28,11 @@ PatientModel.init(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
-    noIdentity: {
+    no_identity: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
-    birthDetailUuid: {
+    birth_detail_uuid: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
@@ -48,7 +48,7 @@ PatientModel.init(
       type: DataTypes.STRING(25),
       allowNull: true,
     },
-    addressUuid: {
+    address_uuid: {
       type: DataTypes.STRING(255),
       allowNull: true,
     },
@@ -57,21 +57,21 @@ PatientModel.init(
       allowNull: true,
       defaultValue: "ID",
     },
-    motherName: {
+    mother_name: {
       type: DataTypes.STRING(150),
       allowNull: true,
     },
-    maritialStatus: {
+    maritial_status: {
       type: DataTypes.STRING(150),
       allowNull: false,
       defaultValue: false,
     },
-    isNewBorn: {
+    is_new_born: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
     },
-    unggahBerkas: {
+    unggah_berkas: {
       type: DataTypes.BLOB,
       allowNull: true,
     },
