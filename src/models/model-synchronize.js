@@ -3,12 +3,13 @@ import sequelizeInstance from "../configurations/sequelize-instance.js";
 import UserModel from "./user-model.js";
 import AdmissionRawatJalanModel from "./admission_rawat_jalan-model.js";
 import bcrypt from "bcrypt";
+import PatientModel from "./patient-model.js";
 
 export default async function syncDB() {
   try {
     await sequelizeInstance.authenticate();
 
-    const models = [UserModel, AdmissionRawatJalanModel];
+    const models = [UserModel, AdmissionRawatJalanModel, PatientModel];
 
     for (const model of models) {
       await model.sync();
