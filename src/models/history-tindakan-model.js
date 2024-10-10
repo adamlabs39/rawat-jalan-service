@@ -9,7 +9,7 @@ HistoryTindakanModel.init(
   {
     ...identifierModel,
     tarif_uuid: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.UUID,
       allowNull: false,
     },
     nama_tindakan: {
@@ -25,7 +25,7 @@ HistoryTindakanModel.init(
       allowNull: false,
     },
     lokasi_uuid: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.UUID,
     },
     pelayanan: {
       type: DataTypes.STRING(255),
@@ -35,7 +35,7 @@ HistoryTindakanModel.init(
   },
   {
     sequelize: sequelizeInstance,
-    tableName: "history_tindakan",
+    tableName: "history_tindakans",
     className: "HistoryTindakans",
     underscored: true,
     timestamps: false,
@@ -49,6 +49,6 @@ HistoryTindakanModel.init(
 
 HistoryTindakanModel.hasMany(PetugasTindakanModel, {
   sourceKey: "uuid",
-  foreignKey: "historyTindakanUuid",
+  foreignKey: "history_tindakan_uuid",
   as: "petugas_tindakan",
 });

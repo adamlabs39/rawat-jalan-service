@@ -7,19 +7,19 @@ export default class PetugasTindakanModel extends Model {}
 PetugasTindakanModel.init(
   {
     ...identifierModel,
-    historyTindakanUuid: {
-      type: DataTypes.STRING(255),
+    history_tindakan_uuid: {
+      type: DataTypes.UUID,
       allowNull: false,
     },
-    practitionerUuid: {
-      type: DataTypes.STRING(255),
+    practitioner_uuid: {
+      type: DataTypes.UUID,
       allowNull: false,
     },
     ...fieldTime,
   },
   {
     sequelize: sequelizeInstance,
-    tableName: "petugas_tindakan",
+    tableName: "petugas_tindakans",
     className: "PetugasTindakans",
     underscored: true,
     timestamps: false,
