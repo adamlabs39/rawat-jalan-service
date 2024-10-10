@@ -20,7 +20,8 @@ git push -uf origin main
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](https://gitlab.com/adamedsbe/adameds-rj/settings/integrations)
+- [ ] [Set up project integrations](https://gitlab.com/adamedsbe/adameds-rj/-/settings/integrations)
+      `
 
 ## Collaborate with your team
 
