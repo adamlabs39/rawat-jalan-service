@@ -4,12 +4,20 @@ import UserModel from "./user-model.js";
 import AdmissionRawatJalanModel from "./admission_rawat_jalan-model.js";
 import bcrypt from "bcrypt";
 import PatientModel from "./patient-model.js";
+import PetugasTindakanModel from "./petugas-tindakan-model.js";
+import HistoryTindakanModel from "./history-tindakan-model.js";
 
 export default async function syncDB() {
   try {
     await sequelizeInstance.authenticate();
 
-    const models = [UserModel, AdmissionRawatJalanModel, PatientModel];
+    const models = [
+      UserModel,
+      AdmissionRawatJalanModel,
+      PatientModel,
+      HistoryTindakanModel,
+      PetugasTindakanModel,
+    ];
 
     for (const model of models) {
       await model.sync();
