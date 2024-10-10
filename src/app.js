@@ -3,8 +3,8 @@ import "dotenv/config";
 import cors from "cors";
 import routes from "./routes/routes.js";
 import errorMiddleware from "./middlewares/error-middleware.js";
-import authorizationMiddleware from "./middlewares/authorization-middleware.js";
 import syncDB from "./models/model-synchronize.js";
+import authorizationSdk from "authorization-sdk";
 
 const APPLICATION_PORT = process.env.APPLICATION_PORT;
 const APPLICATION_HOST = process.env.APPLICATION_HOST;
@@ -12,6 +12,7 @@ const API_BASE = process.env.API_BASE || "api";
 const API_VERSION = process.env.API_VERSION || "v3";
 const API_MODULE = process.env.API_MODULE || "pelayanan";
 const BASE_URL = `/${API_BASE}/${API_VERSION}/${API_MODULE}`;
+syncDB();
 
 const app = express();
 app.use(
@@ -29,8 +30,8 @@ app.use(
   })
 );
 
-app.use(authorizationMiddleware);
-syncDB();
+// app.use(authorizationMiddleware);
+app.use(authorizationSdk([]));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(BASE_URL, routes);
