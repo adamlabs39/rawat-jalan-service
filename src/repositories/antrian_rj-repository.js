@@ -16,7 +16,7 @@ export default class AntrianRawatJalanRepository {
         {
           model: PatientModel,
           as: "patient", // Make sure the alias matches the one you defined in the association
-          attributes: ["uuid", "name", "noRm"], // Select the fields you need
+          attributes: ["uuid", "name", "no_rm"], // Select the fields you need
         },
       ],
     });
