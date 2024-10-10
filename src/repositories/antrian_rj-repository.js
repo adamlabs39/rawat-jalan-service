@@ -1,10 +1,10 @@
 import sequelizeInstance from "../configurations/sequelize-instance.js";
 import moment from "moment";
 import AdmissionRawatJalanModel from "../models/admission_rawat_jalan-model.js";
+import PatientModel from "../models/patient-model.js";
 
 export default class AntrianRawatJalanRepository {
   static async getAntrian(status = null) {
-    console.log(status);
     if (!status) {
       status = 3;
     }
@@ -12,6 +12,13 @@ export default class AntrianRawatJalanRepository {
       where: {
         status_rj: status,
       },
+      include: [
+        {
+          model: PatientModel,
+          as: "patient", // Make sure the alias matches the one you defined in the association
+          attributes: ["uuid", "name", "noRm"], // Select the fields you need
+        },
+      ],
     });
   }
 
