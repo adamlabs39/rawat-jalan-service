@@ -2,6 +2,7 @@ import { DataTypes, Model } from "sequelize";
 import fieldTime from "./common/fieldTime-model.js";
 import identifierModel from "./common/identifier-model.js";
 import sequelizeInstance from "../configurations/sequelize-instance.js";
+import PatientModel from "./patient-model.js";
 
 export default class AdmissionRawatJalanModel extends Model {}
 AdmissionRawatJalanModel.init(
@@ -220,3 +221,9 @@ AdmissionRawatJalanModel.init(
     timestamps: false,
   }
 );
+
+AdmissionRawatJalanModel.belongsTo(PatientModel, {
+  foreignKey: "patient_uuid",
+  as: "patient",
+  constraints: false,
+});
