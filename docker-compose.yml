@@ -31,5 +31,5 @@ services:
         source: /home/admin/adameds/public.key
         target: /adameds-rj/public.key
 networks:
-  adameds-network:
+  rj-network:
     driver: bridge
