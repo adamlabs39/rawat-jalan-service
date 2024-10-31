@@ -4,7 +4,7 @@ import cors from "cors";
 import routes from "./routes/routes.js";
 import errorMiddleware from "./middlewares/error-middleware.js";
 import syncDB from "./models/model-synchronize.js";
-import authorizationSdk from "authorization-sdk";
+import authorizationSdk from "@adameds/authorization-sdk";
 
 const APPLICATION_PORT = process.env.APPLICATION_PORT;
 const APPLICATION_HOST = process.env.APPLICATION_HOST;
@@ -30,7 +30,7 @@ app.use(
   })
 );
 
-// app.use(authorizationMiddleware);
+app.use(authorizationMiddleware);
 app.use(authorizationSdk([]));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
