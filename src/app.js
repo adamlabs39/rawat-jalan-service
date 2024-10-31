@@ -30,7 +30,6 @@ app.use(
   })
 );
 
-app.use(authorizationMiddleware);
 app.use(authorizationSdk([]));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
