@@ -1,0 +1,21 @@
+stages:
+  - build
+  - deploy
+
+build-image:
+  stage: build
+  before_script:
+    - echo "@adameds:registry=https://gitlab.com/api/v4/groups/93029767/-/package/npm/" >> .npmrc
+    - echo "//gitlab.com/api/v4/groups/93029767/-/package/npm/_authToken=$AUTH_TOKEN" >> .npmrc
+    - docker compose --env-file /home/admin/adameds/.env-rj down --rmi all
+  only:
+    - dev-deployment
+  script:
+    - docker build -t adameds/rj-service:dev ./ --no-cache
+
+deploy-app:
+  only:
+    - dev-deployment
+  stage: deploy
+  script:
+    - docker compose --env-file /home/admin/adameds/.env-rj up -d
