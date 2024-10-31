@@ -2,3 +2,5 @@
 /node_modules
 .idea
 *.key
+package-lock.json
+.npmrc
