@@ -1,14 +1,14 @@
 import sequelizeInstance from "../configurations/sequelize-instance.js";
 import moment from "moment";
-import AdmissionRawatJalanModel from "../models/admission_rawat_jalan-model.js";
-import PatientModel from "../models/patient-model.js";
+import {RawatJalanModel} from "@adameds/model-sdk/pelayanan";
+import {PatientModel} from "@adameds/model-sdk/admisi";
 
 export default class AntrianRawatJalanRepository {
   static async getAntrian(status = null) {
     if (!status) {
       status = 3;
     }
-    return await AdmissionRawatJalanModel.findAll({
+    return await RawatJalanModel.findAll({
       where: {
         status_rj: status,
       },
@@ -23,7 +23,7 @@ export default class AntrianRawatJalanRepository {
   }
 
   static async findRajalByUuid(uuid) {
-    return await AdmissionRawatJalanModel.findOne({
+    return await RawatJalanModel.findOne({
       where: { uuid },
     });
   }

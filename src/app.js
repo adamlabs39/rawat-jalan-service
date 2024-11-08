@@ -3,7 +3,6 @@ import "dotenv/config";
 import cors from "cors";
 import routes from "./routes/routes.js";
 import errorMiddleware from "./middlewares/error-middleware.js";
-import syncDB from "./models/model-synchronize.js";
 import authorizationSdk from "@adameds/authorization-sdk";
 
 const APPLICATION_PORT = process.env.APPLICATION_PORT;
@@ -12,7 +11,6 @@ const API_BASE = process.env.API_BASE || "api";
 const API_VERSION = process.env.API_VERSION || "v3";
 const API_MODULE = process.env.API_MODULE || "pelayanan";
 const BASE_URL = `/${API_BASE}/${API_VERSION}/${API_MODULE}`;
-syncDB();
 
 const app = express();
 app.use(
