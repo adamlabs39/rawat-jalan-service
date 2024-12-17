@@ -7,19 +7,15 @@ services:
     image: adameds/rj-service:dev
     container_name: adameds-rj
     ports:
-      - 8088:8088
+      - 8089:8089
     restart: always
     networks:
       - rj-network
     environment:
       DOTENV_KEY: ${DOTENV_KEY}
+      API_BASE: ${API_BASE}
+      API_VERSION: ${API_VERSION}
     volumes:
-      - type: bind
-        source: /home/admin/adameds/private.key
-        target: /adameds-rj/private.key
-      - type: bind
-        source: /home/admin/adameds/public.key
-        target: /adameds-rj/public.key
       - type: bind
         source: /home/admin/adameds/.env.vault
         target: /adameds-rj/.env.vault
