@@ -25,11 +25,8 @@ services:
 
     volumes:
       - type: bind
-        source: /home/admin/adameds/private.key
-        target: /adameds-rj/private.key
-      - type: bind
-        source: /home/admin/adameds/public.key
-        target: /adameds-rj/public.key
+        source: /home/engineer/adameds/.env.vault
+        target: /adameds-rj/.env.vault
 networks:
   rj-network:
     driver: bridge
