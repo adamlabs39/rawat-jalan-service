@@ -1,0 +1,24 @@
+services:
+  adameds-rj:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      no_cache: true
+    image: adameds/rj-service:dev
+    container_name: adameds-rj
+    ports:
+      - 8089:8089
+    restart: always
+    networks:
+      - rj-network
+    environment:
+      DOTENV_KEY: ${DOTENV_KEY}
+      API_BASE: ${API_BASE}
+      API_VERSION: ${API_VERSION}
+    volumes:
+      - type: bind
+        source: /home/gitlab-runner/adameds/.env.vault
+        target: /adameds-rj/.env.vault
+networks:
+  rj-network:
+    driver: bridge
