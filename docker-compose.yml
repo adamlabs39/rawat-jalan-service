@@ -5,20 +5,20 @@ services:
       dockerfile: Dockerfile
       no_cache: true
     image: adameds/rj-service:dev
-    container_name: adameds-rj
+    container_name: api-adameds-rj
     ports:
       - 8089:8089
     restart: always
     networks:
       - rj-network
     environment:
-      DOTENV_KEY: ${DOTENV_KEY}
+      INFISICAL_TOKEN: ${INFISICAL_TOKEN}
       API_BASE: ${API_BASE}
       API_VERSION: ${API_VERSION}
-    volumes:
-      - type: bind
-        source: /home/engineer/adameds/.env.vault
-        target: /adameds-rj/.env.vault
+    # volumes:
+    #   - type: bind
+    #     source: /home/engineer/adameds/.env.vault
+    #     target: /adameds-rj/.env.vault
 networks:
   rj-network:
     driver: bridge
