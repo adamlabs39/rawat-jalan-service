@@ -34,8 +34,6 @@ export function cancelReportFilter({faskesUuid, args = {}, options = {}}) {
             statusRj: 0
         }
     });
-
-    if (args.dokter) filter.practitionerUuid = args.dokter;
     
     return filter;
 }
