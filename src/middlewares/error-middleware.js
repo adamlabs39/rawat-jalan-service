@@ -1,52 +1,29 @@
-import NotfoundException from "../errors/notfound-exception.js";
-import BadRequestException from "../errors/bad-request-exception.js";
-import ResultResponse from "../responses/result-response.js";
-import { messageErrorSave } from "../helpers/message.js";
+import NotfoundException from "../exceptions/notfound-exception.js";
+import UnauthorizedException from "../exceptions/unauthorized-exception.js";
+import errorResponse from "../responses/error-response.js";
+import BadRequestException from "../exceptions/bad-request-exception.js";
+import DuplicateException from "../exceptions/duplicate-exception.js";
+import { UniqueConstraintError } from "sequelize";
 import { ZodError } from "zod";
+import zodErrorParser from "../helpers/zod-error-parser.js";
 
-/**
- * @param {Error} error - Error yang ditangkap
- * @param {import('express').Request} request - Express Request object
- * @param {import('express').Response} response - Express Response object
- * @param {import('express').NextFunction} next - Express NextFunction
- */
-
-const errorMiddleware = (error, request, response, next) => {
-  if (error instanceof ZodError) {
-    return response.status(422).json({
-      message: messageErrorSave,
-      errors: error.errors.map((err) => ({
-        field: err.path.join("."),
-        message: err.message,
-      })),
-    });
-  }
-
+const errorMiddleware = (error, request, response, nextFunction) => {
+  console.error("Error Middleware", error);
   if (error instanceof NotfoundException) {
-    return response.status(error.code).json(
-      ResultResponse.errorResponse(error.message, {
-        error: "not found",
-        message: error.errorMessage,
-      })
-    );
+    return response.status(error.code).json(errorResponse(error.message));
+  } else if (error instanceof UnauthorizedException) {
+    return response.status(error.code).json(errorResponse(error.message));
+  } else if (error instanceof BadRequestException) {
+    response.status(error.status).json(errorResponse("Bad Request", error.errors));
+  } else if (error instanceof DuplicateException) {
+    response.status(error.code).json(errorResponse(error.message, error.errors));
+  } else if (error instanceof UniqueConstraintError) {
+    response.status(400).json(errorResponse("Duplicate Data", error.errors));
+  } else if (error instanceof ZodError) {
+    response.status(400).json(errorResponse("Validation Error", zodErrorParser(error.errors)));
+  } else {
+    response.status(500).json(errorResponse(error.message));
   }
-
-  if (error instanceof BadRequestException) {
-    return response.status(error.status).json(
-      ResultResponse.errorResponse(error.message, {
-        error: "bad request",
-        message: error.errorMessage,
-      })
-    );
-  }
-
-  // Default error handler
-  return response.status(500).json(
-    ResultResponse.errorResponse("Internal server error", {
-      type: "server error",
-      message: "Terjadi kesalahan diserver. Silahkan coba lagi nanti...",
-    })
-  );
 };
 
 export default errorMiddleware;

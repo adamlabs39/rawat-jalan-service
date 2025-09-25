@@ -28,7 +28,7 @@ app.use(
   })
 );
 
-app.use(authorizationSdk([]));
+// app.use(authorizationSdk([]));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(BASE_URL, routes);
