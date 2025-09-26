@@ -27,7 +27,7 @@ export const kunjunganReportInclude = [
                 attributes: ["birth_date", "age_year", "age_month", "age_day"],
             }
         ],
-        attributes: ["name", "gender", "no_rm"],
+        attributes: ["name", "gender", "no_rm", "identity", "no_identity"],
     },
     {
         model: LokasiModel,
