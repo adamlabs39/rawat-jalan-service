@@ -17,7 +17,7 @@ export function commonFilterReport({ faskesUuid, args = {}, options = {} }) {
         ...options
     }
 
-    if (args.dokter) filter.practitionerUuid = args.dokter;
+    if (args.practitioner_uuid) filter.practitionerUuid = args.practitioner_uuid;
 
     return filter;
 }
@@ -34,6 +34,8 @@ export function cancelReportFilter({faskesUuid, args = {}, options = {}}) {
             statusRj: 0
         }
     });
+
+    if (args.polyclinic) filter.lokasiUuid = args.polyclinic; 
     
     return filter;
 }
