@@ -34,6 +34,8 @@ export function cancelReportFilter({faskesUuid, args = {}, options = {}}) {
             statusRj: 0
         }
     });
+
+    if (args.polyclinic) filter.lokasiUuid = args.polyclinic; 
     
     return filter;
 }
