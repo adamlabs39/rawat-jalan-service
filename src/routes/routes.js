@@ -11,7 +11,7 @@ routes.use(authorizationMiddleware);
 routes.get(`/`, (req, res) => res.status(200).json({ message: "Hello World" }));
 
 //* Pemanggilan Antrian RJ
-// routes.put(`/rajal/:uuid`, AntrianRawatJalanController.updateStatus);
+routes.put(`/rajal/antrian-call/:uuid`, AntrianRawatJalanController.updateStatus);
 routes.get(`/rajal/antrian-call`, AntrianRawatJalanController.getAntrian);
 // routes.get(`/rajal/laporan_tindakan`, ReportController.getTindakans);
 

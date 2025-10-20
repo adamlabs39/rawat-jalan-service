@@ -2,7 +2,6 @@ import axios from "axios";
 import { Context as Ctx } from "../middlewares/context.js";
 import { CTX_TOKEN } from "../constants/context-constant.js";
 
-
 const BASE_URL_ANTRIAN = "http://192.168.1.77:7001/api/v3/antrian";
 
 const authInterceptor = (config) => {
@@ -26,4 +25,30 @@ const getAllAntrianCall = axios.create({
 
 getAllAntrianCall.interceptors.request.use(authInterceptor);
 
-export { getAllAntrianCall };
+//* Buat data Antrian Call (ANTRIAN)
+const createAntrianCall = axios.create({
+    baseURL: `${BASE_URL_ANTRIAN}/admisi-antrian`,
+    timeout: 10000,
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Ctx.get(CTX_TOKEN)}`,
+    },
+});
+
+createAntrianCall.interceptors.request.use(authInterceptor);
+
+//* Update status Antrian Call (ANTRIAN)
+const updateAntrianCall = axios.create({
+    baseURL: `${BASE_URL_ANTRIAN}/admisi-antrian`,
+    timeout: 10000,
+    method: "PUT",
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Ctx.get(CTX_TOKEN)}`,
+    }
+});
+
+updateAntrianCall.interceptors.request.use(authInterceptor);
+
+export { getAllAntrianCall, createAntrianCall, updateAntrianCall };

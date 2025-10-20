@@ -4,13 +4,11 @@ import AntrianRawatJalanService from "../services/antrian_rj-service.js";
 export default class AntrianRawatJalanController {
     static async updateStatus(req, res, nextFunction) {
         try {
-        const result = await AntrianRawatJalanService.updateAntrian(
-            req.params.uuid,
-            req.body
-        );
-        res.status(201).json(result);
-        } catch (error) {
-        nextFunction(error);
+            const result = await AntrianRawatJalanService.updateStatus(req.params.uuid, req.body);
+            return res.status(200).json(successResponse(result.message));
+        }catch(error){
+            console.error("Error in controller:", error);
+            nextFunction(error);
         }
     }
 
