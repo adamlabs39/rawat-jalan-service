@@ -47,6 +47,16 @@ export default class AntrianRawatJalanRepository {
                         jenis_pasien: antrian.jenis_pasien,
                         pasien_baru: antrian.pasien_baru,
                     });
+
+                    await RawatJalanModel.update(
+                        { statusRj: 4, tanggalPeriksa: moment().unix() },
+                        {
+                            where: {
+                                uuid: antrian.rawat_jalan_uuid
+                            }
+                        }
+                    );
+                    
                 } catch (error) {
                     console.error("Error update status antrian:", error);
                     throw error;
