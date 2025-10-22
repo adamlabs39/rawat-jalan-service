@@ -13,9 +13,9 @@ routes.get(`/`, (req, res) => res.status(200).json({ message: "Hello World" }));
 //* Pemanggilan Antrian RJ
 routes.put(`/rajal/antrian-call/:uuid`, AntrianRawatJalanController.updateStatus);
 routes.get(`/rajal/antrian-call`, AntrianRawatJalanController.getAntrian);
-// routes.get(`/rajal/laporan_tindakan`, ReportController.getTindakans);
 
 //* Reports
+routes.get(`/laporan-tindakan`, ReportController.getTindakans);
 routes.get('/rajal/report/kunjungan', ReportController.getAllKunjungan);
 routes.get("/rajal/report/batal-kunjungan", ReportController.getCancelKunjungan);
 

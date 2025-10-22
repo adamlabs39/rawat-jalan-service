@@ -1,6 +1,6 @@
 import sequelizeInstance from "../configurations/sequelize-instance.js";
 import Pagination from "../helpers/pagination.js";
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import moment from "moment";
 import {HistoryTindakanModel, PetugasTindakanModel} from "@adameds/model-sdk/rekam-medis";
 import { RawatJalanModel } from "@adameds/model-sdk/pelayanan";
@@ -8,6 +8,7 @@ import { kunjunganReportInclude } from "./include/report-include.js";
 import { cancelReportFilter, commonFilterReport } from "./filters/common-filter.js";
 import { Context } from "../middlewares/context.js";
 import { CTX_AUTHOR } from "../constants/context-constant.js";
+import dayjs from "dayjs";
 
 export default class ReportRepository {
   static async getAllKunjungan(args) {
@@ -89,57 +90,61 @@ export default class ReportRepository {
 
               return await Pagination.init(RawatJalanModel, args, filter, options, transform);
           } catch (error) {
-              console.log("Error on LogPelayananRepository");
               throw error;
           }
   }
 
   static async getTindakans(args) {
-    return sequelizeInstance.transaction(async (tr) => {
-      const currentYear = moment().year();
-      const currentMonth = moment().month() + 1;
-      const startOfMonth = moment()
-        .year(currentYear)
-        .month((args.month ?? currentMonth) - 1)
-        .startOf("month")
-        .valueOf();
-      const endOfMonth = moment()
-        .year(currentYear)
-        .month((args.month ?? currentMonth) - 1)
-        .endOf("month")
-        .valueOf();
+    const { faskesUuid } = Context.get(CTX_AUTHOR);
 
-      let filter = {
-        nama_tindakan: { [Op.like]: `%${args.name || ""}%` },
-        created_at: {
-          [Op.between]: [startOfMonth, endOfMonth],
-        },
-        pelayanan: { [Op.like]: `%${args.pelayanan || ""}%` },
-        faskes_uuid: args.faskes_uuid,
-      };
+    const startOfMonth = dayjs.unix(args.timestamp).startOf("month").unix();
+    const endOfMonth = dayjs.unix(args.timestamp).endOf("month").unix();
 
-      if (args.lokasi_uuid) {
-        filter.lokasi_uuid = args.lokasi_uuid; // Direct equality check
-      }
-
-      const option = {
-        where: {
-          ...filter,
-        },
-        include: [
-          {
-            model: PetugasTindakanModel,
-            as: "petugas_tindakan",
-            attributes: ["practitioner_uuid"],
-            required: true,
-            where: {
-              practitioner_uuid: args.practitioner_uuid || null, // Direct equality check
-            },
+      try {
+        let filter = {
+          faskesUuid,
+          nama_tindakan: { [Op.like]: `%${args.name || ""}%` },
+          created_at: {
+            [Op.between]: [startOfMonth, endOfMonth],
           },
-        ],
-      };
+          pelayanan: { [Op.like]: `%${args.pelayanan || ""}%` },
+        };
 
-      return await Pagination.init(HistoryTindakanModel, args, option);
-    });
+        if (args.lokasi_uuid) {
+          filter.lokasi_uuid = args.lokasi_uuid;
+        }
+
+        const options = {
+          include: [
+            {
+              model: PetugasTindakanModel,
+              as: "petugas_tindakan",
+              attributes: [],
+              required: true,
+              where: args.practitioner_uuid && { practitioner_uuid: args.practitioner_uuid },
+            },
+          ],
+          attributes: ["HistoryTindakanModel.nama_tindakan", [sequelizeInstance.fn("SUM", sequelizeInstance.col("HistoryTindakanModel.qty_tindakan")), "total"]],
+          group: ["HistoryTindakanModel.nama_tindakan"],
+          raw: true,
+          subQuery: false,
+        };
+
+        //* Tanpa Pagination
+        if (args.all === "aktif") {
+          const allData = await HistoryTindakanModel.findAll({
+            where: filter,
+            ...options,
+          });
+
+          return {
+            data: allData,
+          };
+        }
+
+        return await Pagination.initWithGroup(HistoryTindakanModel, args, filter, options);
+      } catch (error) {
+          throw error;
+      }
   }
 }

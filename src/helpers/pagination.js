@@ -33,21 +33,54 @@ export default class Pagination {
     };
   }
 
-    static async transform(data, transformMap) {
-        return Promise.all(data.map(async (row) => {
-            let transformedRow = { ...row.get() };
+  static async transform(data, transformMap) {
+    return Promise.all(
+      data.map(async (row) => {
+        let transformedRow = { ...row.get() };
 
-            for (const [key, transformFn] of Object.entries(transformMap)) {
-                if (typeof transformFn === 'function') {
-                    if (key === 'remove') {
-                        transformFn.forEach(k => delete transformedRow[k]);
-                    } else {
-                        transformedRow[key] = await transformFn(transformedRow);
-                    }
-                }
+        for (const [key, transformFn] of Object.entries(transformMap)) {
+          if (typeof transformFn === "function") {
+            if (key === "remove") {
+              transformFn.forEach((k) => delete transformedRow[k]);
+            } else {
+              transformedRow[key] = await transformFn(transformedRow);
             }
+          }
+        }
 
-            return transformedRow;
-        }));
-    }
+        return transformedRow;
+      })
+    );
+  }
+
+  static async initWithGroup(model, args, filter = {}, options = {}, transformMap = {}, distinct = false) {
+    const page = args.page || 1;
+    const limit = args.limit || 10;
+    const offset = (page - 1) * limit;
+
+    const queryBase = {
+      where: filter,
+      includeIgnoreAttributes: false,
+      ...options,
+    };
+
+    const totalGroups = await model.findAll({
+      ...queryBase,
+      limit: undefined, 
+      offset: undefined,
+    });
+
+    const totalCount = totalGroups.length;
+
+    const data = await model.findAll({
+      ...queryBase,
+      limit,
+      offset,
+    });
+
+    return {
+      data,
+      pagination: paginationHelper(page, limit, totalCount),
+    };
+  }
 }
