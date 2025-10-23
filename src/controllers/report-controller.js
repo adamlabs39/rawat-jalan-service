@@ -22,8 +22,8 @@ export default class ReportController {
 
   static async getTindakans(request, response, nextFunction) {
     try {
-      const result = await ReportService.getTindakans(request.query);
-      response.status(200).json(result);
+        const result = await ReportService.getTindakans(request.query);
+        response.status(200).json(successResponse("Data Rekap Tindakan Pasien berhasil ditampilkan", result));
     } catch (error) {
       console.log(error);
       nextFunction(error);
