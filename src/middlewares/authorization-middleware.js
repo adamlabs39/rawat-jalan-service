@@ -1,5 +1,5 @@
 import { Context as Ctx } from "./context.js";
-import { CTX_AUTHOR } from "../constants/context-constant.js";
+import { CTX_AUTHOR, CTX_TOKEN } from "../constants/context-constant.js";
 import { JwtUtils } from "@adameds/authorization-sdk/jwt-utils"
 const authorizationMiddleware = async (request, response, nextFunction) => {
     try {
@@ -10,6 +10,7 @@ const authorizationMiddleware = async (request, response, nextFunction) => {
         if (!isValid) return response.status(401).json({message: `token tidak valid!`});
         response.locals.jwtData = isValid;
         Ctx.set(CTX_AUTHOR, isValid);
+        Ctx.set(CTX_TOKEN, token);
         nextFunction();
     }catch (error) {
         return response.status(401).json({message: `token tidak valid!`});

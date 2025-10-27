@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export default class AntrianRawatJalanValidation {
-  static UPDATE = z.object({
-    status_rj: z.number().int().min(0).max(5).optional(),
+  static UPDATE_STATUS_ANTRIAN = z.object({
+    status_panggilan: z.number({ required_error: "Status panggilan perlu diisi" }).max(255),
   });
 }
