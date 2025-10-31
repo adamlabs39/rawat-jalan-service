@@ -2,7 +2,7 @@ FROM node:19.5.0-alpine
 
 WORKDIR /adameds-rj
 ENV APPLICATION_HOST=0.0.0.0
-ENV APPLICATION_PORT=8089
+ENV APPLICATION_PORT=8092
 COPY . .
 RUN npm install
 RUN npm install -g @infisical/cli
